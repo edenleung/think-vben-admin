@@ -5,7 +5,7 @@ import { FormSchema } from '/@/components/Table';
 export const columns: BasicColumn[] = [
   {
     title: '用户名',
-    dataIndex: 'account',
+    dataIndex: 'username',
     width: 120,
   },
   {
@@ -20,23 +20,18 @@ export const columns: BasicColumn[] = [
   },
   {
     title: '创建时间',
-    dataIndex: 'createTime',
+    dataIndex: 'create_time',
     width: 180,
   },
   {
-    title: '角色',
-    dataIndex: 'role',
-    width: 200,
-  },
-  {
-    title: '备注',
-    dataIndex: 'remark',
+    title: 'dept',
+    dataIndex: 'dept_id',
   },
 ];
 
 export const searchFormSchema: FormSchema[] = [
   {
-    field: 'account',
+    field: 'username',
     label: '用户名',
     component: 'Input',
     colProps: { span: 8 },
@@ -51,41 +46,50 @@ export const searchFormSchema: FormSchema[] = [
 
 export const accountFormSchema: FormSchema[] = [
   {
-    field: 'account',
+    field: 'username',
     label: '用户名',
     component: 'Input',
     required: true,
   },
   {
-    field: 'pwd',
+    field: 'password',
     label: '密码',
     component: 'InputPassword',
     required: true,
     show: false,
   },
   {
+    field: 'roles',
     label: '角色',
-    field: 'role',
     component: 'ApiSelect',
     componentProps: {
+      mode: 'multiple',
+      numberToString: true,
       api: getAllRoleList,
-      labelField: 'roleName',
-      valueField: 'roleValue',
+      labelField: 'title',
+      valueField: 'id',
     },
-    required: true,
+    rules: [
+      {
+        required: true,
+        type: 'array',
+      },
+    ],
   },
   {
-    field: 'dept',
+    field: 'dept_id',
     label: '所属部门',
     component: 'TreeSelect',
     componentProps: {
-      replaceFields: {
-        title: 'deptName',
-        key: 'id',
-        value: 'id',
-      },
+      replaceFields: { title: 'title', key: 'title', value: 'id' },
       getPopupContainer: () => document.body,
     },
+    rules: [
+      {
+        required: true,
+        type: 'integer',
+      },
+    ],
     required: true,
   },
   {
@@ -93,18 +97,5 @@ export const accountFormSchema: FormSchema[] = [
     label: '昵称',
     component: 'Input',
     required: true,
-  },
-
-  {
-    label: '邮箱',
-    field: 'email',
-    component: 'Input',
-    required: true,
-  },
-
-  {
-    label: '备注',
-    field: 'remark',
-    component: 'InputTextArea',
   },
 ];

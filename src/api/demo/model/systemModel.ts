@@ -23,26 +23,28 @@ export type MenuParams = {
 };
 
 export interface AccountListItem {
-  id: string;
-  account: string;
+  id: number;
+  username: string;
   email: string;
   nickname: string;
-  role: number;
-  createTime: string;
-  remark: string;
+  create_time: string;
+  update_time: string;
+  avatar: string;
   status: number;
 }
 
 export interface DeptListItem {
-  id: string;
-  orderNo: string;
-  createTime: string;
-  remark: string;
+  id: number;
+  title: string;
+  create_time: string;
+  update_time: string;
+  pid: number;
   status: number;
+  children: DeptListItem[];
 }
 
 export interface MenuListItem {
-  id: string;
+  id: number;
   orderNo: string;
   createTime: string;
   status: number;
@@ -50,15 +52,21 @@ export interface MenuListItem {
   component: string;
   permission: string;
 }
-
 export interface RoleListItem {
-  id: string;
-  roleName: string;
-  roleValue: string;
+  id: number;
+  title: string;
   status: number;
-  orderNo: string;
-  createTime: string;
+  create_time: string;
+  update_time: string;
 }
+
+export type CreateAccountBodyItem = {
+  username: string;
+  password: string;
+  roles: any;
+  dept_id: number;
+  nickname: string;
+};
 
 /**
  * @description: Request list return value

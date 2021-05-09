@@ -8,7 +8,7 @@
   import { BasicModal, useModalInner } from '/@/components/Modal';
   import { BasicForm, useForm } from '/@/components/Form/index';
   import { accountFormSchema } from './account.data';
-  import { getDeptList } from '/@/api/demo/system';
+  import { getDeptList, createAccount, updateAccount } from '/@/api/demo/system';
 
   export default defineComponent({
     name: 'AccountModal',
@@ -16,6 +16,7 @@
     emits: ['success', 'register'],
     setup(_, { emit }) {
       const isUpdate = ref(true);
+      let selecteId = ref(0);
 
       const [registerForm, { setFieldsValue, updateSchema, resetFields, validate }] = useForm({
         labelWidth: 100,
@@ -32,6 +33,7 @@
         isUpdate.value = !!data?.isUpdate;
 
         if (unref(isUpdate)) {
+          selecteId.value = data.record.id;
           setFieldsValue({
             ...data.record,
           });
@@ -40,11 +42,11 @@
         const treeData = await getDeptList();
         updateSchema([
           {
-            field: 'pwd',
+            field: 'password',
             show: !unref(isUpdate),
           },
           {
-            field: 'dept',
+            field: 'dept_id',
             componentProps: { treeData },
           },
         ]);
@@ -58,6 +60,10 @@
           setModalProps({ confirmLoading: true });
           // TODO custom api
           console.log(values);
+          const action = !unref(isUpdate)
+            ? createAccount(values)
+            : updateAccount(unref(selecteId), values);
+          await action;
           closeModal();
           emit('success');
         } finally {

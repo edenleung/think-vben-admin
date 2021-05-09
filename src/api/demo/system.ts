@@ -9,15 +9,17 @@ import {
   AccountListGetResultModel,
   RolePageListGetResultModel,
   RoleListGetResultModel,
+  CreateAccountBodyItem,
 } from './model/systemModel';
 import { defHttp } from '/@/utils/http/axios';
 
 enum Api {
-  AccountList = '/system/getAccountList',
-  DeptList = '/system/getDeptList',
-  MenuList = '/system/getMenuList',
-  RolePageList = '/system/getRoleListByPage',
-  GetAllRoleList = '/system/getAllRoleList',
+  AccountList = '/user',
+  DeptList = '/dept',
+  MenuList = '/menu',
+  RolePageList = '/role',
+  GetAllRoleList = '/role/all',
+  CreateAccount = '/user',
 }
 
 export const getAccountList = (params: AccountParams) =>
@@ -34,3 +36,12 @@ export const getRoleListByPage = (params?: RolePageParams) =>
 
 export const getAllRoleList = (params?: RoleParams) =>
   defHttp.get<RoleListGetResultModel>({ url: Api.GetAllRoleList, params });
+
+export const createAccount = (params?: CreateAccountBodyItem) =>
+  defHttp.post<any>({ url: Api.CreateAccount, params });
+
+export const updateAccount = (id: any, params: CreateAccountBodyItem) =>
+  defHttp.put<any>({ url: `${Api.CreateAccount}/${id}`, params });
+
+export const deleteAccount = (id: any) =>
+  defHttp.delete<any>({ url: `${Api.CreateAccount}/${id}` });
