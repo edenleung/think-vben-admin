@@ -10,6 +10,7 @@ import {
   RolePageListGetResultModel,
   RoleListGetResultModel,
   CreateAccountBodyItem,
+  CreateRoleBodyItem,
 } from './model/systemModel';
 import { defHttp } from '/@/utils/http/axios';
 
@@ -20,6 +21,8 @@ enum Api {
   RolePageList = '/role',
   GetAllRoleList = '/role/all',
   CreateAccount = '/user',
+  MenuTree = '/menu/tree',
+  Role = '/role',
 }
 
 export const getAccountList = (params: AccountParams) =>
@@ -30,6 +33,8 @@ export const getDeptList = (params?: DeptListItem) =>
 
 export const getMenuList = (params?: MenuParams) =>
   defHttp.get<MenuListGetResultModel>({ url: Api.MenuList, params });
+
+export const getMenuTree = () => defHttp.get<MenuListGetResultModel>({ url: Api.MenuTree });
 
 export const getRoleListByPage = (params?: RolePageParams) =>
   defHttp.get<RolePageListGetResultModel>({ url: Api.RolePageList, params });
@@ -45,3 +50,13 @@ export const updateAccount = (id: any, params: CreateAccountBodyItem) =>
 
 export const deleteAccount = (id: any) =>
   defHttp.delete<any>({ url: `${Api.CreateAccount}/${id}` });
+
+export const createRole = (params: CreateRoleBodyItem) =>
+  defHttp.post<any>({ url: `${Api.Role}`, params });
+
+export const getRole = (id: number) => defHttp.get<any>({ url: `${Api.Role}/${id}` });
+
+export const updateRole = (id: number, params: CreateRoleBodyItem) =>
+  defHttp.put<any>({ url: `${Api.Role}/${id}`, params });
+
+export const deleteRole = (id: number) => defHttp.delete<any>({ url: `${Api.Role}/${id}` });

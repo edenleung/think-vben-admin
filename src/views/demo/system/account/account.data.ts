@@ -23,10 +23,6 @@ export const columns: BasicColumn[] = [
     dataIndex: 'create_time',
     width: 180,
   },
-  {
-    title: 'dept',
-    dataIndex: 'dept_id',
-  },
 ];
 
 export const searchFormSchema: FormSchema[] = [

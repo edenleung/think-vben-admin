@@ -4,10 +4,15 @@ import { h } from 'vue';
 import { Tag } from 'ant-design-vue';
 import { Icon } from '/@/components/Icon';
 
+enum MenuType {
+  path = '目录',
+  menu = '菜单',
+}
+
 export const columns: BasicColumn[] = [
   {
     title: '菜单名称',
-    dataIndex: 'menuName',
+    dataIndex: 'title',
     width: 200,
     align: 'left',
   },
@@ -21,7 +26,7 @@ export const columns: BasicColumn[] = [
   },
   {
     title: '权限标识',
-    dataIndex: 'permission',
+    dataIndex: 'name',
     width: 180,
   },
   {
@@ -29,9 +34,16 @@ export const columns: BasicColumn[] = [
     dataIndex: 'component',
   },
   {
-    title: '排序',
-    dataIndex: 'orderNo',
-    width: 50,
+    title: '可操作权限',
+    slots: { customRender: 'menu' },
+  },
+  {
+    title: '类型',
+    customRender: ({ record }) => {
+      const type = record.type;
+      const text = MenuType[type];
+      return h(Tag, {}, () => text);
+    },
   },
   {
     title: '状态',
@@ -39,7 +51,7 @@ export const columns: BasicColumn[] = [
     width: 80,
     customRender: ({ record }) => {
       const status = record.status;
-      const enable = ~~status === 0;
+      const enable = ~~status === 1;
       const color = enable ? 'green' : 'red';
       const text = enable ? '启用' : '停用';
       return h(Tag, { color: color }, () => text);

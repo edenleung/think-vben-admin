@@ -68,6 +68,12 @@ export type CreateAccountBodyItem = {
   nickname: string;
 };
 
+export type CreateRoleBodyItem = {
+  title: string;
+  status: number;
+  actions: any;
+};
+
 /**
  * @description: Request list return value
  */

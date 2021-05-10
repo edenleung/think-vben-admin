@@ -4,6 +4,31 @@
       <template #toolbar>
         <a-button type="primary" @click="handleCreate"> 新增菜单 </a-button>
       </template>
+      <template #menu="{ record }">
+        <template v-if="record.type !== 'menu'">-</template>
+        <a-popover
+          title="详情"
+          placement="topLeft"
+          v-for="(action, index) in record.actions"
+          :key="index"
+        >
+          <template #content>
+            <div style="margin-bottom: 15px">唯一识别码: {{ action.name }}</div>
+            <a-button
+              size="small"
+              type="primary"
+              ghost
+              @click="showActionModal(action)"
+              style="margin-right: 10px"
+              >编辑</a-button
+            >
+            <a-button size="small" type="danger" ghost @click="showDeleteConfirm(action.id)"
+              >删除</a-button
+            >
+          </template>
+          <a-tag>{{ action.title }}</a-tag>
+        </a-popover>
+      </template>
       <template #action="{ record }">
         <TableAction
           :actions="[
@@ -30,7 +55,7 @@
   import { defineComponent } from 'vue';
 
   import { BasicTable, useTable, TableAction } from '/@/components/Table';
-  import { getMenuList } from '/@/api/demo/system';
+  import { getMenuTree } from '/@/api/demo/system';
 
   import { useDrawer } from '/@/components/Drawer';
   import MenuDrawer from './MenuDrawer.vue';
@@ -44,7 +69,7 @@
       const [registerDrawer, { openDrawer }] = useDrawer();
       const [registerTable, { reload }] = useTable({
         title: '菜单列表',
-        api: getMenuList,
+        api: getMenuTree,
         columns,
         formConfig: {
           labelWidth: 120,
@@ -87,6 +112,15 @@
         reload();
       }
 
+      function showActionModal(record: Recordable) {
+        openDrawer(true, {
+          record,
+          isUpdate: true,
+        });
+      }
+
+      function showDeleteConfirm() {}
+
       return {
         registerTable,
         registerDrawer,
@@ -94,6 +128,8 @@
         handleEdit,
         handleDelete,
         handleSuccess,
+        showActionModal,
+        showDeleteConfirm,
       };
     },
   });
