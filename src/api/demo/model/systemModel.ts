@@ -81,6 +81,12 @@ export type MenuItemBody = {
   path: string;
 };
 
+export type DeptItemBody = {
+  title: string;
+  status: number;
+  pid: number;
+};
+
 /**
  * @description: Request list return value
  */

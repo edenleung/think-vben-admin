@@ -12,12 +12,13 @@ import {
   CreateAccountBodyItem,
   CreateRoleBodyItem,
   MenuItemBody,
+  DeptItemBody,
 } from './model/systemModel';
 import { defHttp } from '/@/utils/http/axios';
 
 enum Api {
   AccountList = '/user',
-  DeptList = '/dept',
+  Dept = '/dept',
   Menu = '/menu',
   RolePageList = '/role',
   GetAllRoleList = '/role/all',
@@ -31,7 +32,14 @@ export const getAccountList = (params: AccountParams) =>
   defHttp.get<AccountListGetResultModel>({ url: Api.AccountList, params });
 
 export const getDeptList = (params?: DeptListItem) =>
-  defHttp.get<DeptListGetResultModel>({ url: Api.DeptList, params });
+  defHttp.get<DeptListGetResultModel>({ url: Api.Dept, params });
+
+export const createDept = (params: DeptItemBody) => defHttp.post<any>({ url: Api.Dept, params });
+
+export const updateDept = (id: number, params: DeptItemBody) =>
+  defHttp.put<any>({ url: `${Api.Dept}/${id}`, params });
+
+export const deleteDept = (id: number) => defHttp.delete<any>({ url: `${Api.Dept}/${id}` });
 
 export const getMenuList = (params?: MenuParams) =>
   defHttp.get<MenuListGetResultModel>({ url: Api.Menu, params });
