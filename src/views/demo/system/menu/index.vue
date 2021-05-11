@@ -14,17 +14,23 @@
         >
           <template #content>
             <div style="margin-bottom: 15px">唯一识别码: {{ action.name }}</div>
-            <a-button
-              size="small"
-              type="primary"
-              ghost
-              @click="showActionModal(action)"
-              style="margin-right: 10px"
-              >编辑</a-button
-            >
-            <a-button size="small" type="danger" ghost @click="showDeleteConfirm(action.id)"
-              >删除</a-button
-            >
+
+            <TableAction
+              :actions="[
+                {
+                  icon: 'clarity:note-edit-line',
+                  onClick: handleEditAction.bind(null, action),
+                },
+                {
+                  icon: 'ant-design:delete-outlined',
+                  color: 'error',
+                  popConfirm: {
+                    title: '是否确认删除',
+                    confirm: handleDeleteAction.bind(null, action),
+                  },
+                },
+              ]"
+            />
           </template>
           <a-tag>{{ action.title }}</a-tag>
         </a-popover>
@@ -55,7 +61,7 @@
   import { defineComponent } from 'vue';
 
   import { BasicTable, useTable, TableAction } from '/@/components/Table';
-  import { getMenuTree } from '/@/api/demo/system';
+  import { getMenuTree, deleteMenu, deleteMenuAction } from '/@/api/demo/system';
 
   import { useDrawer } from '/@/components/Drawer';
   import MenuDrawer from './MenuDrawer.vue';
@@ -104,8 +110,27 @@
         });
       }
 
-      function handleDelete(record: Recordable) {
+      function handleEditAction(record: Recordable) {
         console.log(record);
+        record.type = 'action';
+        record.permission = record.name;
+        record.pid = record.menu_id;
+        openDrawer(true, {
+          record,
+          isUpdate: true,
+        });
+      }
+
+      async function handleDeleteAction(record: Recordable) {
+        console.log(record);
+        await deleteMenuAction(record.id);
+        handleSuccess();
+      }
+
+      async function handleDelete(record: Recordable) {
+        console.log(record);
+        await deleteMenu(record.id);
+        handleSuccess();
       }
 
       function handleSuccess() {
@@ -130,6 +155,8 @@
         handleSuccess,
         showActionModal,
         showDeleteConfirm,
+        handleDeleteAction,
+        handleEditAction,
       };
     },
   });

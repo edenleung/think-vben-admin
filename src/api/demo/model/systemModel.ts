@@ -74,6 +74,13 @@ export type CreateRoleBodyItem = {
   actions: any;
 };
 
+export type MenuItemBody = {
+  title: string;
+  status: number;
+  type: string;
+  path: string;
+};
+
 /**
  * @description: Request list return value
  */

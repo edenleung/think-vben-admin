@@ -59,18 +59,18 @@ export const columns: BasicColumn[] = [
   },
   {
     title: '创建时间',
-    dataIndex: 'createTime',
+    dataIndex: 'create_time',
     width: 180,
   },
 ];
 
-const isDir = (type: string) => type === '0';
-const isMenu = (type: string) => type === '1';
-const isButton = (type: string) => type === '2';
+// const isDir = (type: string) => type === 'path';
+const isMenu = (type: string) => type === 'menu';
+const isButton = (type: string) => type === 'action';
 
 export const searchFormSchema: FormSchema[] = [
   {
-    field: 'menuName',
+    field: 'title',
     label: '菜单名称',
     component: 'Input',
     colProps: { span: 8 },
@@ -81,8 +81,8 @@ export const searchFormSchema: FormSchema[] = [
     component: 'Select',
     componentProps: {
       options: [
-        { label: '启用', value: '0' },
-        { label: '停用', value: '1' },
+        { label: '启用', value: 1 },
+        { label: '停用', value: 0 },
       ],
     },
     colProps: { span: 8 },
@@ -97,36 +97,36 @@ export const formSchema: FormSchema[] = [
     defaultValue: '0',
     componentProps: {
       options: [
-        { label: '目录', value: '0' },
-        { label: '菜单', value: '1' },
-        { label: '按钮', value: '2' },
+        { label: '目录', value: 'path' },
+        { label: '菜单', value: 'menu' },
+        { label: '按钮', value: 'action' },
       ],
     },
     colProps: { lg: 24, md: 24 },
   },
   {
-    field: 'menuName',
+    field: 'title',
     label: '菜单名称',
     component: 'Input',
     required: true,
   },
-
   {
-    field: 'parentMenu',
+    field: 'name',
+    label: '路由名称',
+    component: 'Input',
+    show: ({ values }) => !isButton(values.type),
+  },
+  {
+    field: 'pid',
     label: '上级菜单',
     component: 'TreeSelect',
     componentProps: {
-      replaceFields: {
-        title: 'menuName',
-        key: 'id',
-        value: 'id',
-      },
+      replaceFields: { children: 'children', title: 'title', key: 'key', value: 'id' },
       getPopupContainer: () => document.body,
     },
   },
-
   {
-    field: 'orderNo',
+    field: 'sort',
     label: '排序',
     component: 'InputNumber',
     required: true,
@@ -140,7 +140,7 @@ export const formSchema: FormSchema[] = [
   },
 
   {
-    field: 'routePath',
+    field: 'path',
     label: '路由地址',
     component: 'Input',
     required: true,
@@ -154,59 +154,60 @@ export const formSchema: FormSchema[] = [
   },
   {
     field: 'permission',
-    label: '权限标识',
+    label: '权限名称',
     component: 'Input',
-    show: ({ values }) => !isDir(values.type),
+    required: true,
+    show: ({ values }) => isButton(values.type),
   },
   {
     field: 'status',
     label: '状态',
     component: 'RadioButtonGroup',
-    defaultValue: '0',
+    defaultValue: 1,
     componentProps: {
       options: [
-        { label: '启用', value: '0' },
-        { label: '禁用', value: '1' },
+        { label: '启用', value: 1 },
+        { label: '禁用', value: 0 },
       ],
     },
   },
   {
-    field: 'isExt',
+    field: 'blank',
     label: '是否外链',
     component: 'RadioButtonGroup',
-    defaultValue: '0',
+    defaultValue: 0,
     componentProps: {
       options: [
-        { label: '否', value: '0' },
-        { label: '是', value: '1' },
+        { label: '否', value: 0 },
+        { label: '是', value: 1 },
       ],
     },
     show: ({ values }) => !isButton(values.type),
   },
 
   {
-    field: 'keepalive',
+    field: 'keepAlive',
     label: '是否缓存',
     component: 'RadioButtonGroup',
-    defaultValue: '0',
+    defaultValue: 0,
     componentProps: {
       options: [
-        { label: '否', value: '0' },
-        { label: '是', value: '1' },
+        { label: '否', value: 0 },
+        { label: '是', value: 1 },
       ],
     },
     show: ({ values }) => isMenu(values.type),
   },
 
   {
-    field: 'show',
+    field: 'status',
     label: '是否显示',
     component: 'RadioButtonGroup',
-    defaultValue: '0',
+    defaultValue: 1,
     componentProps: {
       options: [
-        { label: '是', value: '0' },
-        { label: '否', value: '1' },
+        { label: '是', value: 1 },
+        { label: '否', value: 0 },
       ],
     },
     show: ({ values }) => !isButton(values.type),
