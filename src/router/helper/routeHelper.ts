@@ -62,9 +62,8 @@ export function transformObjToRoute<T = AppRouteModule>(routeList: AppRouteModul
         route.component = LayoutMap.get((route.component as string).toUpperCase() as LayoutMapKey);
       } else {
         route.children = [cloneDeep(route)];
-        route.component = LAYOUT;
-        route.name = `${route.name}Parent`;
-        route.path = '';
+        // route.component = LAYOUT;
+        route.name = `${route.name}`;
         const meta = route.meta || {};
         meta.single = true;
         meta.affix = false;

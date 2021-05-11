@@ -25,7 +25,7 @@ export const columns: BasicColumn[] = [
     },
   },
   {
-    title: '权限标识',
+    title: '路由名称',
     dataIndex: 'name',
     width: 180,
   },
