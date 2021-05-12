@@ -7,7 +7,6 @@
     width="50%"
     @ok="handleSubmit"
   >
-    {{ getFieldsValue() }}
     <BasicForm @register="registerForm" />
   </BasicDrawer>
 </template>
